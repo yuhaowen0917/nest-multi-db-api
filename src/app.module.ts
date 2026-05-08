@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import { typeOrmConfig } from './ormconfig';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import * as winston from 'winston';
           ),
         }),
       ],
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => typeOrmConfig,
     }),
   ],
   controllers: [AppController],

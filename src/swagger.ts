@@ -4,7 +4,7 @@ export const generateDocument = (app) => {
   // 创建swagger接口文档
   const options = new DocumentBuilder()
     .setTitle('vue3-admin') // 标题
-    .setDescription('Background system based on Nest.js + Vue3 full stack development') // 描述
+    .setDescription('基于Nest.js + Vue3的全栈开发后台管理系统')  // 描述
     .setVersion('1.0') // 版本
     .addTag('user') // 标签
     .addTag('student') // 标签

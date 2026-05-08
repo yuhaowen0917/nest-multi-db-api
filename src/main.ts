@@ -32,7 +32,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`http://localhost:${port}`);
-  console.log(`服务运行在端口：${port}`);
+  console.log(`${process.env.NODE_ENV ?? 'development'} 服务运行在端口：${port}`);
 
   // 热重载监听
   if (module.hot) {
