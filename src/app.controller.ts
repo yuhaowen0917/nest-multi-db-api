@@ -1,9 +1,13 @@
 import { Controller, Get, Param, Query, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(
+    private readonly appService: AppService,
+    private configService: ConfigService
+  ) {}
 
   @Get()
   getHello(): string {
@@ -41,6 +45,17 @@ export class AppController {
       code: 200,
       data: body,
       msg: '提交成功'
+    };
+  }
+
+  @Get('env')
+  getEnv() {
+    const port = this.configService.get('PORT');
+    const dbName = this.configService.get('DB_NAME');
+    console.log(process.env.NODE_ENV, process.env.DB_NAME);
+    return {
+      服务端口: port,
+      数据库名: dbName
     };
   }
 }

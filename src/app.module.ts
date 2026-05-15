@@ -6,6 +6,7 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { typeOrmConfig } from './ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -33,6 +34,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
-export class AppModule { }
+export class AppModule {}
