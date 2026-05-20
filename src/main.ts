@@ -4,6 +4,8 @@ import { generateDocument } from './swagger';
 import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
 import helmet from 'helmet';
+import { ResponseInterceptor } from './common/interceptor/response.interceptor';
+import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 
 // 热重载核心代码
 declare const module: any;
@@ -12,8 +14,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 设置全局路由前缀
   // app.setGlobalPrefix('api');
-  // 创建swagger文档
-  generateDocument(app);
 
   // 全局校验管道
   app.useGlobalPipes(
@@ -23,10 +23,19 @@ async function bootstrap() {
       forbidNonWhitelisted: true, // 禁止传多余字段
     }),
   );
+
   // 跨域
   app.use(cors());
   // 安全头部
   app.use(helmet());
+
+  // 全局响应拦截
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  // 全局异常过滤
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // 创建swagger文档
+  generateDocument(app);
 
   // 启动应用
   const port = process.env.PORT || 3000;
