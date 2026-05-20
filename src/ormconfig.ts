@@ -1,16 +1,16 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 
-// 这里用户名密码请换成自己的，database也可以换成自己的
-export const typeOrmConfig: TypeOrmModuleOptions = {
+export const typeOrmConfig = (config: ConfigService): TypeOrmModuleOptions => ({
   type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: '123456',
-  database: 'test-user',
+  host: config.get('DB_HOST'),
+  port: config.get('DB_PORT'),
+  username: config.get('DB_USER'),
+  password: config.get('DB_PASS'),
+  database: config.get('DB_NAME'),
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true,
-  retryDelay: 500, // 重试连接数据库间隔
-  retryAttempts: 10, // 重试连接数据库的次数
+  synchronize: config.get('NODE_ENV') === 'development', // 仅开发自动建表
+  retryDelay: 500,
+  retryAttempts: 10,
   autoLoadEntities: true,
-};
+});

@@ -7,6 +7,7 @@ import * as winston from 'winston';
 import { typeOrmConfig } from './ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatGateway } from './chat/chat.gateway';
+import { GirlModule } from './girl/girl.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ChatGateway } from './chat/chat.gateway';
             winston.format.timestamp(),
             winston.format.colorize(),
             winston.format.printf((info) => {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               return `[${info.timestamp}] ${info.level}: ${info.message}`;
             }),
           ),
@@ -30,8 +32,9 @@ import { ChatGateway } from './chat/chat.gateway';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => typeOrmConfig,
+      useFactory: (config: ConfigService) => typeOrmConfig(config),
     }),
+    GirlModule,
   ],
   controllers: [AppController],
   providers: [AppService, ChatGateway],
