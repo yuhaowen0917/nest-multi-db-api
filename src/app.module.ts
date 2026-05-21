@@ -7,8 +7,8 @@ import * as winston from 'winston';
 import { typeOrmConfig } from './ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatGateway } from './chat/chat.gateway';
-// import { GirlModule } from './girl/girl.module';
 import { MapModule } from './map/map.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -35,8 +35,8 @@ import { MapModule } from './map/map.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => typeOrmConfig(config),
     }),
-    // GirlModule,
     MapModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, ChatGateway],

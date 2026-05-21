@@ -20,7 +20,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       code = exception.getStatus();
       const errRes = exception.getResponse();
-      msg = typeof errRes === 'string' ? errRes : (errRes as any).message || msg;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      msg =
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        typeof errRes === 'string' ? errRes : (errRes as any).message || msg;
     }
 
     res.status(HttpStatus.OK).json(ResultData.fail(msg, code));

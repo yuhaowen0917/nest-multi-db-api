@@ -1,6 +1,7 @@
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { INestApplication } from '@nestjs/common';
 
-export const generateDocument = (app) => {
+export const generateDocument = (app: INestApplication) => {
   // 创建swagger接口文档
   const options = new DocumentBuilder()
     .setTitle('vue3-admin') // 标题
