@@ -27,8 +27,8 @@ export class UserService {
     const exists = await this.userRepo.findOneBy({ username });
     if (exists) throw new BadRequestException('账号已存在');
 
-    // 密码加密
-    const hashPass = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashPass: string = await bcrypt.hash(password, salt);
 
     const user = this.userRepo.create({
       username,
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   /**
-   * 登录 仅账号密码
+   * 登录
    */
   async login(dto: LoginUserDto) {
     const { username, password } = dto;
@@ -48,7 +48,7 @@ export class UserService {
     const user = await this.userRepo.findOneBy({ username });
     if (!user) throw new UnauthorizedException('账号不存在');
 
-    const isOk = await bcrypt.compare(password, user.password);
+    const isOk: boolean = await bcrypt.compare(password, user.password);
     if (!isOk) throw new UnauthorizedException('密码错误');
 
     // 生成token
@@ -78,10 +78,27 @@ export class UserService {
   }
 
   /**
-   * 更新
+   * 更新用户信息（🔥 修复：密码自动加密）
    */
   async update(id: number, dto: RegisterUserDto) {
-    await this.userRepo.update(id, dto);
+    const user = await this.findOne(id);
+    if (!user) throw new BadRequestException('用户不存在');
+
+    // 要更新的数据
+    const updateData: any = {
+      username: dto.username,
+      nickname: dto.nickname,
+    };
+
+    // 如果前端传了密码 → 加密再存
+    if (dto.password && dto.password.trim() !== '') {
+      const salt = await bcrypt.genSalt(10);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      updateData.password = await bcrypt.hash(dto.password, salt);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    await this.userRepo.update(id, updateData);
     return this.findOne(id);
   }
 

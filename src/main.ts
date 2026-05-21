@@ -46,8 +46,11 @@ async function bootstrap() {
   );
 
   // 热重载监听
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (module.hot) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     module.hot.accept();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     module.hot.dispose(() => app.close());
   }
 }
