@@ -14,7 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('用户管理')
-@ApiBearerAuth() // 👈 全局开启token
+// @ApiBearerAuth() // 👈 全局开启token
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

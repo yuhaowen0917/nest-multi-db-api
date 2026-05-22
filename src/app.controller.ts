@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   @Get()
@@ -19,7 +19,7 @@ export class AppController {
     return {
       code: 200,
       data: [1, 2, 3, 4],
-      msg: '请求成功'
+      msg: '请求成功',
     };
   }
 
@@ -27,7 +27,7 @@ export class AppController {
   getUser(@Param('id') id: string) {
     return {
       userId: id,
-      name: '张三'
+      name: '张三',
     };
   }
 
@@ -35,7 +35,7 @@ export class AppController {
   getQuery(@Query() query: any) {
     return {
       姓名: query.name,
-      年龄: query.age
+      年龄: query.age,
     };
   }
 
@@ -44,7 +44,7 @@ export class AppController {
     return {
       code: 200,
       data: body,
-      msg: '提交成功'
+      msg: '提交成功',
     };
   }
 
@@ -55,7 +55,7 @@ export class AppController {
     console.log(process.env.NODE_ENV, process.env.DB_NAME);
     return {
       服务端口: port,
-      数据库名: dbName
+      数据库名: dbName,
     };
   }
 }

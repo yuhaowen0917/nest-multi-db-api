@@ -7,7 +7,7 @@ export const generateDocument = (app: INestApplication) => {
     .setTitle('vue3-admin') // 标题
     .setDescription('基于Nest.js + Vue3的全栈开发后台管理系统') // 描述
     .setVersion('1.0') // 版本
-    .addBearerAuth() // 添加BearerAuth
+    .addBearerAuth() // 添加BearerAuth token 开启 JWT 授权输入框
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);

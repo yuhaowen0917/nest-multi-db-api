@@ -1,32 +1,36 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
-// 注册DTO（账号+密码+可选昵称）
+// 注册 DTO
 export class RegisterUserDto {
-  @ApiProperty({ description: '账号' })
+  @ApiProperty({ description: '用户账号', example: 'admin' })
   @IsString()
   @IsNotEmpty()
   username: string;
 
-  @ApiProperty({ description: '密码' })
+  @ApiProperty({ description: '用户密码', example: '123456' })
   @IsString()
   @IsNotEmpty()
   password: string;
 
-  @ApiProperty({ description: '昵称', required: false })
+  @ApiProperty({
+    description: '用户昵称',
+    example: '系统管理员',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   nickname?: string;
 }
 
-// 登录DTO（仅账号密码）
+// 登录 DTO
 export class LoginUserDto {
-  @ApiProperty({ description: '登录账号' })
+  @ApiProperty({ description: '登录账号', example: 'admin' })
   @IsString()
   @IsNotEmpty()
   username: string;
 
-  @ApiProperty({ description: '登录密码' })
+  @ApiProperty({ description: '登录密码', example: '123456' })
   @IsString()
   @IsNotEmpty()
   password: string;

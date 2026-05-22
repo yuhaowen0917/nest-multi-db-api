@@ -38,10 +38,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // 统一格式返回给前端
-    response
-      .status(HttpStatus.OK)
-      .json(
-        ResultData.fail(Array.isArray(message) ? message[0] : message, code),
-      );
+    response.status(HttpStatus.OK);
+    response.header('Content-Type', 'application/json; charset=utf-8');
+    response.json(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      ResultData.fail(Array.isArray(message) ? message[0] : message, code),
+    );
   }
 }

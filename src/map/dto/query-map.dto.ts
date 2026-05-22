@@ -5,12 +5,12 @@ import { Type } from 'class-transformer';
 export class QueryMapDto {
   @ApiProperty({ description: '页码', default: 1, required: false })
   @IsOptional()
-  @Type(() => Number) // 🔥 自动转数字
+  @Type(() => Number)
   page?: number = 1;
 
   @ApiProperty({ description: '每页条数', default: 10, required: false })
   @IsOptional()
-  @Type(() => Number) // 🔥 自动转数字
+  @Type(() => Number)
   size?: number = 10;
 
   @ApiProperty({ description: '省份模糊查询', required: false })

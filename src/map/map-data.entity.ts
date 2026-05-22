@@ -4,37 +4,45 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('map_data')
 export class MapData {
+  @ApiProperty({ description: '主键ID' })
   @PrimaryGeneratedColumn()
   id: number;
 
-  // 🔥 修复这里：必须明确指定数据库类型
-  @Column({ type: 'varchar', length: 255, nullable: true, comment: '访问时间' })
+  @ApiProperty({ description: '访问时间', nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true, comment: '访问时间' })
   accessTime: string | null;
 
-  @Column({ type: 'varchar', length: 255, comment: '区域编码' })
+  @ApiProperty({ description: '区域编码' })
+  @Column({ type: 'varchar', length: 20, comment: '区域编码' })
   adcode: string;
 
-  @Column({ type: 'varchar', length: 255, comment: '城市' })
+  @ApiProperty({ description: '城市名称' })
+  @Column({ type: 'varchar', length: 50, comment: '城市' })
   city: string;
 
+  @ApiProperty({ description: '数据创建时间' })
   @CreateDateColumn({ comment: '创建时间' })
   createdAt: string;
 
-  @Column({ type: 'varchar', length: 255, comment: 'IP地址' })
+  @ApiProperty({ description: 'IP地址' })
+  @Column({ type: 'varchar', length: 50, comment: 'IP地址' })
   ip: string;
 
-  @Column({ type: 'varchar', length: 255, comment: 'IP归属地' })
+  @ApiProperty({ description: 'IP归属地址' })
+  @Column({ type: 'varchar', length: 100, comment: 'IP归属地' })
   ipAddress: string;
 
-  @Column({ type: 'varchar', length: 255, comment: '省份' })
+  @ApiProperty({ description: '省份名称' })
+  @Column({ type: 'varchar', length: 50, comment: '省份' })
   province: string;
 
+  @ApiProperty({ description: '经纬度矩形范围' })
   @Column({ type: 'varchar', length: 255, comment: '经纬度矩形范围' })
   rectangle: string;
 
-  // 这个只是 TS 类型，不会映射到数据库，所以没问题
   [property: string]: any;
 }
