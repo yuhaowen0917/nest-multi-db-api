@@ -28,12 +28,17 @@ export class MapService {
     const where: any = {};
 
     // 拼接条件
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (province) where.province = Like(`%${province}%`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (city) where.city = Like(`%${city}%`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (adcode) where.adcode = adcode;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (startTime && endTime) where.createdAt = Between(startTime, endTime);
 
     const [list, total] = await this.mapRepository.findAndCount({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       where,
       order: { id: 'DESC' },
       skip: (page - 1) * size,

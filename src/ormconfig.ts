@@ -9,7 +9,8 @@ export const typeOrmConfig = (config: ConfigService): TypeOrmModuleOptions => ({
   password: config.get('DB_PASS'),
   database: config.get('DB_NAME'),
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: config.get('NODE_ENV') === 'development', // 仅开发自动建表
+  // synchronize: config.get('NODE_ENV') === 'development', // 仅开发自动建表
+  synchronize: false,
   retryDelay: 500,
   retryAttempts: 10,
   autoLoadEntities: true,
