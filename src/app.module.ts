@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { typeOrmConfig } from './ormconfig';
-import { TypeOrmModule } from '@nestjs/typeorm';
+// 双 Sequelize 独立配置
+// import { sequelizeMysqlConfig } from './config/sequelize-mysql.config';
+import { sequelizePgConfig } from './config/sequelize-pg.config';
+
 import { ChatGateway } from './chat/chat.gateway';
 import { MapModule } from './map/map.module';
 import { UserModule } from './user/user.module';
-import { SequelizeTestModule } from './sequelize-test/sequelize-test.module';
-
+// import { SequelizeTestModule } from './sequelize-test/sequelize-test.module';
+import { PgModule } from './pg/pg.module';
 @Module({
   imports: [
     // 🔥 核心：加载环境变量
@@ -39,21 +43,12 @@ import { SequelizeTestModule } from './sequelize-test/sequelize-test.module';
     }),
     SequelizeModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        dialect: 'mysql',
-        host: config.get('DB_HOST'),
-        port: config.get('DB_PORT'),
-        username: config.get('DB_USER'),
-        password: config.get('DB_PASS'),
-        database: config.get('DB_NAME'), // 连接同一个 blog 库
-        autoLoadModels: true, // 自动加载模型
-        synchronize: true, // 仅为 Sequelize 模型自动建表（不影响原有表）
-        logging: false, // 关闭日志
-      }),
+      useFactory: sequelizePgConfig, // 引入独立配置文件
     }),
     MapModule,
     UserModule,
-    SequelizeTestModule,
+    // SequelizeTestModule,
+    PgModule,
   ],
   controllers: [AppController],
   providers: [AppService, ChatGateway],

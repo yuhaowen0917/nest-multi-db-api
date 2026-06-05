@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-// 表名：test_sequelize
 @Table({ tableName: 'test_sequelize' })
 export class TestSequelize extends Model<TestSequelize> {
   @ApiProperty({ description: 'ID' })
@@ -13,23 +12,14 @@ export class TestSequelize extends Model<TestSequelize> {
   declare id: number;
 
   @ApiProperty({ description: '名称' })
-  @Column({
-    type: DataType.STRING(50),
-    allowNull: false,
-  })
-  name: string;
+  @Column({ type: DataType.STRING(50), allowNull: false })
+  declare name: string;
 
   @ApiProperty({ description: '邮箱' })
-  @Column({
-    type: DataType.STRING(100),
-    unique: true,
-  })
-  email: string;
+  @Column({ type: DataType.STRING(100), unique: true })
+  declare email: string;
 
   @ApiProperty({ description: '状态' })
-  @Column({
-    type: DataType.TINYINT,
-    defaultValue: 1,
-  })
-  status: number;
+  @Column({ type: DataType.TINYINT, defaultValue: 1 })
+  declare status: number;
 }

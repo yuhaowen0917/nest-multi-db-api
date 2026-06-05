@@ -51,6 +51,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return {
       status: 'success',
       msg: '后端已收到',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data: data,
       clientId: client.id,
     };
