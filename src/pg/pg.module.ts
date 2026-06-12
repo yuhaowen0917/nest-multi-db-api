@@ -5,7 +5,7 @@ import { PgController } from './pg.controller';
 import { PgData } from './entities/pg-data.entity';
 
 @Module({
-  imports: [SequelizeModule.forFeature([PgData])],
+  imports: [SequelizeModule.forFeature([PgData], 'postgres')],
   controllers: [PgController],
   providers: [PgService],
 })

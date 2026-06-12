@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Query, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Body, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
+  private readonly logger = new Logger(AppController.name);
+
   constructor(
     private readonly appService: AppService,
     private configService: ConfigService,
@@ -52,7 +54,7 @@ export class AppController {
   getEnv() {
     const port = this.configService.get('PORT');
     const dbName = this.configService.get('DB_NAME');
-    console.log(process.env.NODE_ENV, process.env.DB_NAME);
+    this.logger.log(`环境变量 - PORT: ${port}, DB_NAME: ${dbName}`);
     return {
       服务端口: port,
       数据库名: dbName,

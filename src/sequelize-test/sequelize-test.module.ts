@@ -5,7 +5,7 @@ import { SequelizeTestController } from './sequelize-test.controller';
 import { TestSequelize } from './entities/test-sequelize.entity';
 
 @Module({
-  imports: [SequelizeModule.forFeature([TestSequelize])],
+  imports: [SequelizeModule.forFeature([TestSequelize], 'mysql')],
   controllers: [SequelizeTestController],
   providers: [SequelizeTestService],
 })

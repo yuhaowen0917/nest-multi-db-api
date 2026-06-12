@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, Between } from 'typeorm';
+import { Repository, Like, Between, FindOptionsWhere } from 'typeorm';
 import { MapData } from './map-data.entity';
 import { QueryMapDto } from './dto/query-map.dto';
 
@@ -25,20 +25,15 @@ export class MapService {
       endTime,
     } = query;
 
-    const where: any = {};
+    const where: FindOptionsWhere<MapData> = {};
 
     // 拼接条件
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (province) where.province = Like(`%${province}%`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (city) where.city = Like(`%${city}%`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (adcode) where.adcode = adcode;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (startTime && endTime) where.createdAt = Between(startTime, endTime);
+    if (startTime && endTime) where.createdAt = Between(new Date(startTime), new Date(endTime));
 
     const [list, total] = await this.mapRepository.findAndCount({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       where,
       order: { id: 'DESC' },
       skip: (page - 1) * size,

@@ -6,7 +6,7 @@ import { TestDto } from './dto/test.dto';
 @Injectable()
 export class SequelizeTestService {
   constructor(
-    @InjectModel(TestSequelize)
+    @InjectModel(TestSequelize, 'mysql')
     private testModel: typeof TestSequelize,
   ) {}
 

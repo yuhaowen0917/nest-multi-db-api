@@ -37,8 +37,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message = exception.message;
     }
 
-    // 统一格式返回给前端
-    response.status(HttpStatus.OK);
+    // 返回真实 HTTP 状态码 + 统一 JSON 体
+    response.status(code);
     response.header('Content-Type', 'application/json; charset=utf-8');
     response.json(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

@@ -1,7 +1,9 @@
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 
 export const generateDocument = (app: INestApplication) => {
+  const logger = new Logger('Swagger');
+
   // 创建swagger接口文档
   const options = new DocumentBuilder()
     .setTitle('vue3-admin') // 标题
@@ -12,5 +14,5 @@ export const generateDocument = (app: INestApplication) => {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
   const port = process.env.PORT || 3000;
-  console.log(`swagger文档已生成，访问口：http://localhost:${port}/docs`);
+  logger.log(`swagger文档已生成，访问口：http://localhost:${port}/docs`);
 };

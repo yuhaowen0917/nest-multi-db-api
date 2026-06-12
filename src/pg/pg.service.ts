@@ -6,7 +6,7 @@ import { PgDataDto } from './dto/pg-data.dto';
 @Injectable()
 export class PgService {
   constructor(
-    @InjectModel(PgData)
+    @InjectModel(PgData, 'postgres')
     private pgDataModel: typeof PgData,
   ) {}
 

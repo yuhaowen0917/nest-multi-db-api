@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { generateDocument } from './swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import cors from 'cors';
 import helmet from 'helmet';
 import { ResponseInterceptor } from './common/interceptor/response.interceptor';
@@ -11,6 +11,8 @@ import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 declare const module: any;
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
+
   const app = await NestFactory.create(AppModule);
   // 设置全局路由前缀
   // app.setGlobalPrefix('api');
@@ -40,8 +42,8 @@ async function bootstrap() {
   // 启动应用
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  console.log(`http://localhost:${port}`);
-  console.log(
+  logger.log(`http://localhost:${port}`);
+  logger.log(
     `${process.env.NODE_ENV ?? 'development'} 服务运行在端口：${port}`,
   );
 

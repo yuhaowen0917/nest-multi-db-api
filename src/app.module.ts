@@ -8,13 +8,13 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { typeOrmConfig } from './ormconfig';
 // 双 Sequelize 独立配置
-// import { sequelizeMysqlConfig } from './config/sequelize-mysql.config';
+import { sequelizeMysqlConfig } from './config/sequelize-mysql.config';
 import { sequelizePgConfig } from './config/sequelize-pg.config';
 
 import { ChatGateway } from './chat/chat.gateway';
 import { MapModule } from './map/map.module';
 import { UserModule } from './user/user.module';
-// import { SequelizeTestModule } from './sequelize-test/sequelize-test.module';
+import { SequelizeTestModule } from './sequelize-test/sequelize-test.module';
 import { PgModule } from './pg/pg.module';
 @Module({
   imports: [
@@ -41,13 +41,21 @@ import { PgModule } from './pg/pg.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => typeOrmConfig(config),
     }),
+    // ⚠️ 所有 Sequelize forRootAsync 必须放在同一个模块中
+    // 否则 forFeature 无法查找到对应连接（嵌套模块 export 异常）
     SequelizeModule.forRootAsync({
+      name: 'mysql',
       inject: [ConfigService],
-      useFactory: sequelizePgConfig, // 引入独立配置文件
+      useFactory: sequelizeMysqlConfig,
+    }),
+    SequelizeModule.forRootAsync({
+      name: 'postgres',
+      inject: [ConfigService],
+      useFactory: sequelizePgConfig,
     }),
     MapModule,
     UserModule,
-    // SequelizeTestModule,
+    SequelizeTestModule,
     PgModule,
   ],
   controllers: [AppController],

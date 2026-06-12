@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  Logger,
 } from '@nestjs/common';
 import { SequelizeTestService } from './sequelize-test.service';
 import { TestDto } from './dto/test.dto';
@@ -14,12 +15,14 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 @ApiTags('Sequelize 测试接口')
 @Controller('sequelize/test')
 export class SequelizeTestController {
+  private readonly logger = new Logger(SequelizeTestController.name);
+
   constructor(private readonly sequelizeTestService: SequelizeTestService) {}
 
   @Post()
   @ApiOperation({ summary: '新增测试数据' })
   create(@Body() dto: TestDto) {
-    console.log(dto);
+    this.logger.log('新增测试数据：' + JSON.stringify(dto));
     return this.sequelizeTestService.create(dto);
   }
 

@@ -15,7 +15,7 @@ export class MapData {
   @ApiProperty({ description: '访问时间', nullable: true })
   @Column({
     type: 'varchar',
-    name: 'access_time', // 关键！指定数据库列名
+    name: 'access_time',
     nullable: true,
     comment: '访问时间',
   })
@@ -48,6 +48,4 @@ export class MapData {
   @ApiProperty({ description: '经纬度范围' })
   @Column({ type: 'varchar', comment: '经纬度矩形范围' })
   rectangle: string;
-
-  [property: string]: any;
 }
