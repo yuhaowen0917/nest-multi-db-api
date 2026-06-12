@@ -1,0 +1,34 @@
+# 依赖
+node_modules/
+.git/
+.gitignore
+
+# 构建缓存
+dist/
+
+# 本地环境变量（容器内通过 docker-compose / -e 传入）
+.env
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+
+# 日志
+logs/
+*.log
+
+# 测试
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时
+.temp
+.tmp

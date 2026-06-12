@@ -6,6 +6,18 @@
 
 ## 2026-06-12
 
+### 🐳 Docker 容器化部署配置
+
+**说明：** 新增 Docker 多阶段构建 + Docker Compose 编排，一键启动 NestJS + MySQL + PostgreSQL 三服务。
+
+**修改文件：**
+
+| 文件 | 变更类型 | 说明 |
+|------|---------|------|
+| `Dockerfile` | ✨ 新增 | 双阶段构建：builder 阶段安装依赖+编译，production 阶段仅保留 dist + node_modules |
+| `.dockerignore` | ✨ 新增 | 排除 node_modules/.env/.git/IDE 等，减少构建上下文 |
+| `docker-compose.yml` | ✨ 新增 | 编排 app(健康检查等待) + mysql + postgres 三服务 |
+
 ### 🔴 P0-1: 环境变量安全 — 敏感信息移出版本控制
 
 **问题：** `.env.development`、`.env.production`、`.env.test` 中包含 `JWT_SECRET`、`DB_PASS` 等敏感信息且已提交到 Git。

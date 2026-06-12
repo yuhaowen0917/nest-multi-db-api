@@ -1,0 +1,91 @@
+services:
+  # =====================
+  # NestJS 应用服务
+  # =====================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-test-app
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # MySQL 连接（指向同 compose 内的 mysql 服务）
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-123456}
+      - DB_NAME=${DB_NAME:-blog}
+      # PostgreSQL 连接（指向同 compose 内的 postgres 服务）
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=${PG_USER:-postgres}
+      - PG_PASS=${PG_PASS:-123456}
+      - PG_DB=${PG_DB:-pg_sequelize_db}
+      # JWT
+      - JWT_SECRET=${JWT_SECRET:-nest_jwt_secret_666}
+      - JWT_EXPIRES_IN=7d
+      # WebSocket CORS
+      - WS_ORIGIN=*
+    depends_on:
+      mysql:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - nest-test-net
+
+  # =====================
+  # MySQL
+  # =====================
+  mysql:
+    image: mysql:8.0
+    container_name: nest-test-mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS:-123456}
+      - MYSQL_DATABASE=${DB_NAME:-blog}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - nest-test-net
+
+  # =====================
+  # PostgreSQL
+  # =====================
+  postgres:
+    image: postgres:16-alpine
+    container_name: nest-test-postgres
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_USER=${PG_USER:-postgres}
+      - POSTGRES_PASSWORD=${PG_PASS:-123456}
+      - POSTGRES_DB=${PG_DB:-pg_sequelize_db}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - nest-test-net
+
+volumes:
+  mysql-data:
+  postgres-data:
+
+networks:
+  nest-test-net:
