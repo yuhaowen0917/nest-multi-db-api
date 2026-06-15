@@ -8,7 +8,7 @@
 
 ### 🐳 Docker 容器化部署配置
 
-**说明：** 新增 Docker 多阶段构建 + Docker Compose 编排，一键启动 NestJS + MySQL + PostgreSQL 三服务。
+**说明：** 新增 Docker 多阶段构建 + Docker Compose 编排。
 
 **修改文件：**
 
@@ -16,7 +16,9 @@
 |------|---------|------|
 | `Dockerfile` | ✨ 新增 | 双阶段构建：builder 阶段安装依赖+编译，production 阶段仅保留 dist + node_modules |
 | `.dockerignore` | ✨ 新增 | 排除 node_modules/.env/.git/IDE 等，减少构建上下文 |
-| `docker-compose.yml` | ✨ 新增 | 编排 app(健康检查等待) + mysql + postgres 三服务 |
+| `docker-compose.yml` | ✨ 新增 | 编排 app 容器，通过 `host.docker.internal` 连接宿主机已有 MySQL + PostgreSQL |
+
+**v2 调整：** 本地已有 MySQL/PostgreSQL 服务，改为 app 容器直连宿主机数据库，不再在 Docker 中重复安装数据库容器。|
 
 ### 🔴 P0-1: 环境变量安全 — 敏感信息移出版本控制
 
