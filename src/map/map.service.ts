@@ -31,7 +31,8 @@ export class MapService {
     if (province) where.province = Like(`%${province}%`);
     if (city) where.city = Like(`%${city}%`);
     if (adcode) where.adcode = adcode;
-    if (startTime && endTime) where.createdAt = Between(new Date(startTime), new Date(endTime));
+    if (startTime && endTime)
+      where.createdAt = Between(new Date(startTime), new Date(endTime));
 
     const [list, total] = await this.mapRepository.findAndCount({
       where,

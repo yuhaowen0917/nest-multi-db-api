@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Query, Post, Body, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Post,
+  Body,
+  Logger,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -34,7 +42,7 @@ export class AppController {
   }
 
   @Get('query')
-  getQuery(@Query() query: any) {
+  getQuery(@Query() query: Record<string, string>) {
     return {
       姓名: query.name,
       年龄: query.age,
@@ -42,7 +50,7 @@ export class AppController {
   }
 
   @Post('create')
-  createData(@Body() body: any) {
+  createData(@Body() body: Record<string, unknown>) {
     return {
       code: 200,
       data: body,
@@ -52,8 +60,8 @@ export class AppController {
 
   @Get('env')
   getEnv() {
-    const port = this.configService.get('PORT');
-    const dbName = this.configService.get('DB_NAME');
+    const port = this.configService.get<string>('PORT');
+    const dbName = this.configService.get<string>('DB_NAME');
     this.logger.log(`环境变量 - PORT: ${port}, DB_NAME: ${dbName}`);
     return {
       服务端口: port,
